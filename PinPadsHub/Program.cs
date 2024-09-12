@@ -1,4 +1,4 @@
-using SignalR.Hubs;
+using PinPadsHub.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 

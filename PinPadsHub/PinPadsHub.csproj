@@ -6,4 +6,10 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Reference Include="EGlobal.TotalPosSDKNet">
+      <HintPath>lib\EGlobal.TotalPosSDKNet.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>
