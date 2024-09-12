@@ -37,7 +37,7 @@ app.UseRouting();
 app.UseAuthorization();
 
 app.MapHub<MainHub>("/hub");
-app.MapHub<PinPadHub>("/pinPadHub");
+//app.MapHub<PinPadHub>("/pinPadHub");
 
 app.UseCors("HubClient");
 
