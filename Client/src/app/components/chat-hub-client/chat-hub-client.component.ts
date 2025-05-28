@@ -11,9 +11,6 @@ import { HubConnection, HubConnectionBuilder, HubConnectionState, LogLevel } fro
 export class ChatHubClientComponent {
   private conn!: HubConnection;
 
-  /**
-   *
-   */
   constructor() {
     this.conn = new HubConnectionBuilder()
         .withUrl('https://localhost:7244/hub')
@@ -34,11 +31,28 @@ export class ChatHubClientComponent {
       alert("server stopped");
       console.log(message);
     });
+
+    this.conn.on("santanderPinPadActivated", (message) => {
+      alert(message);
+    });
+
+    this.conn.on("bbvaVenta", (result) => {
+      alert(result);
+    });
+
+    this.conn.on("bbvaCancelacion", (result) => {
+      alert(result);
+    });
+
+    this.conn.on("bbvaCancelacionDevolucion", (result) => {
+      alert(result);
+    });
+
   }
 
   public async startServerHub() {
     try {
-      if (this.conn.state == HubConnectionState.Disconnected) {
+      if (this.conn.state != HubConnectionState.Connected) {
 
         await this.conn.start();
         await this.conn.invoke("StartServer", "Server has started");
@@ -47,6 +61,7 @@ export class ChatHubClientComponent {
         alert("Server already started");
       }
     } catch (e) {
+      alert(e);
       console.error(e);
     }
   }
@@ -76,5 +91,71 @@ export class ChatHubClientComponent {
     } catch (e) {
       console.log(e);
     }
+  }
+
+  public async conectarSantander() {
+    try {
+      if (this.conn.state == HubConnectionState.Connected) {
+        await this.conn.invoke("TestSantander");
+      }
+      else {
+        alert("Start server first");
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  public async inicializarSantander() {
+    try {
+      if (this.conn.state == HubConnectionState.Connected) {
+        await this.conn.invoke("ActivateSantanderPinPad", "2", "2");
+      }
+      else {
+        alert("Start server first");
+      }
+    } catch (e) {
+      console.log(e);
+    }
+
+  }
+  public async cobroBbva() {
+    try {
+      if (this.conn.state == HubConnectionState.Connected) {
+        await this.conn.invoke("Venta", 899, "123456789012");
+      }
+      else {
+        alert("Start server first");
+      }
+    } catch (e) {
+      console.log(e);
+    }
+
+  }
+  public async cancelaBbva() {
+    try {
+      if (this.conn.state == HubConnectionState.Connected) {
+        await this.conn.invoke("CancelacionBbva", "123456789012", "0");
+      }
+      else {
+        alert("Start server first");
+      }
+    } catch (e) {
+      console.log(e);
+    }
+
+  }
+  public async cancelacionDevolucionBbva() {
+    try {
+      if (this.conn.state == HubConnectionState.Connected) {
+        await this.conn.invoke("CancelacionDevolucionBbva",10.5, "123456789012", "0");
+      }
+      else {
+        alert("Start server first");
+      }
+    } catch (e) {
+      console.log(e);
+    }
+
   }
 }
